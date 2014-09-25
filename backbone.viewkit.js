@@ -42,7 +42,11 @@
             if (this._current) this._current.trigger('outview', this);
 
             if (view) {
-                this.$el.append(view.$el);
+                if (transition && transition.reverse) {
+                    this.$el.prepend(view.$el);
+                } else {
+                    this.$el.append(view.$el);
+                }
 
                 if (current && transition) {
                     transition.run(current.$el, view.$el, function() {
@@ -278,10 +282,12 @@
 
         transition: {
             property: Config.transform,
-            duration: 0.4,
+            duration: 0.3,
             easing: 'ease-out',
             delay: 0
         },
+        originalLightness: 100,
+        hiddenLightness: 80,
 
         initialize: function(options) {
             this.reverse = !!options.reverse;
@@ -289,23 +295,44 @@
 
         before: function(from, to) {
             var width = from.parent().width();
-            from.css('left', 0);
-            to.css('left', this.reverse ? -width : width);
+
+            if (this.reverse) {
+                to.css('opacity', 0.9);
+                to.css('background-color', 'hsl(0,0%,' + this.hiddenLightness + '%)');
+
+                from.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
+            } else {
+                to.css('left', width);
+                to.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
+            }
         },
 
         after: function(from, to) {
             var width = from.parent().width();
             var delta = this.reverse ? width : -width;
             var els = from.add(to);
+            els.css(Config.transition, '-webkit-transform .3s ease-out 0, opacity .3s ease-out 0, background-color .3s ease-out');
 
-            els.css(Config.transform, 'translate3d(' + delta + 'px, 0, 0)');
+            if (this.reverse) {
+                to.css('opacity', 1);
+                to.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
+
+                from.css(Config.transform, 'translate3d(' + delta + 'px, 0, 0)');
+            } else {
+                to.css(Config.transform, 'translate3d(' + delta + 'px, 0, 0)');
+
+                from.css('opacity', 0.9);
+                from.css('background-color', 'hsl(0,0%,' + this.hiddenLightness + '%)');
+            }
         },
-
         cleanup: function(from, to) {
             var els = from.add(to);
 
-            els.css(Config.transform, '');
+            els.css('opacity', '');
+            els.css('background-color', '');
             els.css('left', '');
+            els.css(Config.transform, '');
+            els.css(Config.transition, '');
         }
 
     });
