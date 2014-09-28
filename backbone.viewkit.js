@@ -198,6 +198,68 @@
         }
 
     });
+    ViewKit.NamedViewSelector = ViewKit.ViewSelector.extend({
+
+        constructor: function(options) {
+            this._views = {}; // {String: View}
+            this._name = null; // String
+
+            options || (options = {});
+            this.transition = options.transition;
+            if (options.views) this.setViews(options.views);
+
+            ViewKit.ViewPort.prototype.constructor.apply(this, arguments);
+        },
+
+        // getViews :: () => [View]
+        getViews: function() {
+            var r = [], i = 0, views = this._views;
+            for (v in views) {
+              if (views.hasOwnProperty(v)) {
+                r[i++] = views[v];
+              }
+            }
+            return r;
+        },
+        getView: function() {
+            return this._views[this._name];
+        },
+
+        // setViews :: {String: View} => ()
+        setViews: function(views) {
+            var self = this;
+            _.each(this._views, function(el, it) {
+                self._cleanup(el);
+            });
+            this._index = null;
+            this.addViews(views);
+        },
+
+        // addViews :: {String: View} => ()
+        addViews: function(views) {
+            var self = this;
+            _.each(views, function(el, it) {
+                el.viewSelector = self;
+                self._views = views;
+            });
+        },
+
+        selectView: function(name, transition) {
+            if (! this._views.hasOwnProperty(name)) {
+                throw new Error('no view found');
+            }
+
+            this._name = name;
+            this.render(transition || this.transition);
+            this.trigger('selected', this.getView(), name);
+        },
+
+        _cleanup: function(viewName) {
+            delete this._views[viewName].viewSelector;
+            delete this._views[viewName];
+        }
+
+    });
 
     // Transitions
     // ---------------
