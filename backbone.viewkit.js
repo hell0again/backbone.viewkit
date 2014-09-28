@@ -79,6 +79,9 @@
         getView: function() {
             return this._stack.top();
         },
+        getLength: function() {
+            return this._stack.items.length
+        },
 
         pushView: function(view, transition) {
             view.viewStack = this;
