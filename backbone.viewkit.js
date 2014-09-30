@@ -352,23 +352,42 @@
             delay: 0
         },
         originalLightness: 100,
-        hiddenLightness: 80,
 
         initialize: function(options) {
             this.reverse = !!options.reverse;
         },
+        assureEffectElement: function(w, h) {
+            if (!this.effectElement) {
+                this.effectElement = $('<div style="position:absolute; top:0; left:0; bottom:0; right:0; background: #000" width="' + w + 'px" height="' + h + 'px"></div>');
+            }
+            return this.effectElement;
+        },
+        removeEffectElement: function() {
+            this.effectElement.remove();
+            this.effectElement = undefined;
+        },
 
         before: function(from, to) {
             var width = from.parent().width();
+            var height = from.height();
+            var mid = this.assureEffectElement(width, height);
 
             if (this.reverse) {
-                to.css('opacity', 0.9);
-                to.css('background-color', 'hsl(0,0%,' + this.hiddenLightness + '%)');
-
+                from.css('left', 0);
                 from.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
+
+                mid.css('opacity', 0.2);
+                to.after(mid);
+
+                to.css('left', -1/3 * width);
             } else {
                 to.css('left', width);
                 to.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
+
+                mid.css('opacity', 0);
+                from.after(mid);
+
+                from.css('left', 0);
             }
         },
 
@@ -376,24 +395,28 @@
             var width = from.parent().width();
             var delta = this.reverse ? width : -width;
             var els = from.add(to);
-            els.css(Config.transition, '-webkit-transform .3s ease-out 0, opacity .3s ease-out 0, background-color .3s ease-out');
+            var mid = this.assureEffectElement();
+            els.css(Config.transition, '-webkit-transform 0.3s ease-out 0');
+            mid.css(Config.transition, 'opacity 0.3s ease-out 0');
 
             if (this.reverse) {
-                to.css('opacity', 1);
-                to.css('background-color', 'hsl(0,0%,' + this.originalLightness + '%)');
-
                 from.css(Config.transform, 'translate3d(' + delta + 'px, 0, 0)');
+
+                mid.css('opacity', 0);
+
+                to.css(Config.transform, 'translate3d(' + delta/3 + 'px, 0, 0)');
             } else {
                 to.css(Config.transform, 'translate3d(' + delta + 'px, 0, 0)');
 
-                from.css('opacity', 0.9);
-                from.css('background-color', 'hsl(0,0%,' + this.hiddenLightness + '%)');
+                mid.css('opacity', 0.2);
+
+                from.css(Config.transform, 'translate3d(' + delta/3 + 'px, 0, 0)');
             }
         },
         cleanup: function(from, to) {
             var els = from.add(to);
+            this.removeEffectElement();
 
-            els.css('opacity', '');
             els.css('background-color', '');
             els.css('left', '');
             els.css(Config.transform, '');
