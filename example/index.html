@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 
         <link rel="stylesheet" href="example.css">
-        
+
         <script src="../test/vendor/jquery.js"></script>
         <script src="../test/vendor/underscore.js"></script>
         <script src="../test/vendor/backbone.js"></script>
@@ -13,11 +13,15 @@
         <script src="example.js"></script>
     </head>
     <body>
-        <div id="content"></div>
+        <div id="container"></div>
         <div id="tabs"></div>
 
         <!-- Templates -->
 
+        <script id="container-template" type="text/template">
+            <div id="header"></div>
+            <div id="content"></div>
+        </script>
         <script id="tabs-template" type="text/template">
             <ul>
                 <li><button data-tab="0">Foo/Bar/Baz</button></li>
@@ -25,11 +29,12 @@
             </ul>
         </script>
 
-        <script id="foo-template" type="text/template">
+        <script id="foo-header-template" type="text/template">
             <div class="nav">
                 <h1>Foo</h1>
             </div>
-
+        </script>
+        <script id="foo-template" type="text/template">
             <div class="main">
                 <div class="scrollable vertical">
                     This is view Foo.
@@ -39,7 +44,7 @@
             </div>
         </script>
 
-        <script id="bar-template" type="text/template">
+        <script id="bar-header-template" type="text/template">
             <div class="nav">
                 <div class="left">
                     <a href="#" class="pop">Back</a>
@@ -47,7 +52,8 @@
 
                 <h1>Bar</h1>
             </div>
-
+        </script>
+        <script id="bar-template" type="text/template">
             <div class="main">
                 This is view Bar.
                 <br>
@@ -55,7 +61,7 @@
             </div>
         </script>
 
-        <script id="baz-template" type="text/template">
+        <script id="baz-header-template" type="text/template">
             <div class="nav">
                 <div class="left">
                     <a href="#" class="pop">Back</a>
@@ -63,17 +69,19 @@
 
                 <h1>Baz</h1>
             </div>
-
+        </script>
+        <script id="baz-template" type="text/template">
             <div class="main">
                 This is view Baz.
             </div>
         </script>
 
-        <script id="qux-template" type="text/template">
+        <script id="qux-header-template" type="text/template">
             <div class="nav">
                 <h1>Qux</h1>
             </div>
-
+        </script>
+        <script id="qux-template" type="text/template">
             <div class="main">
                 This is view Qux.
             </div>

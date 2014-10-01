@@ -3,67 +3,60 @@ body {
     padding: 0;
 }
 
-#tabs {
-    background: black;
-    bottom: 0;
-    height: 50px;
-    left: 0;
+#header {
     position: absolute;
-    right: 0;
-    text-align: center;
-    width: 100%;
-}
-
-#tabs ul li {
-    display: inline-block;
-}
-
-#content {
-    bottom: 50px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0px;
-    width: 100%;
-}
-
-#content .nav {
-    background: black;
-    color: white;
-    height: 44px;
-    left: 0;
-    line-height: 44px;
-    position: absolute;
-    right: 0;
-    text-align: center;
     top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
     width: 100%;
 }
-
-#content .nav a {
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+.nav {
+    background: black;
+    color: white;
+    line-height: 44px;
+    text-align: center;
+}
+.nav a {
     color: white;
 }
 
-#content .nav h1 {
+.nav h1 {
     margin: 0;
     padding: 0;
 }
-
-#content .nav .left {
+.nav .left {
     float: left;
     margin-left: 20px;
 }
 
-#content .page {
-    bottom: 0px;
-    left: 0;
+#content {
     position: absolute;
+    top: 44px;
+    bottom: 50px;
+    left: 0;
     right: 0;
-    top: 0px;
+    width: 100%;
+}
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
 }
 
-#content .main {
+
+.main {
     bottom: 0;
     left: 0;
     overflow: hidden;
@@ -84,3 +77,19 @@ body {
     list-style: none;
     padding: 10px 20px;
 }
+
+#tabs {
+    background: black;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    width: 100%;
+}
+#tabs ul li {
+    display: inline-block;
+}
+
+
