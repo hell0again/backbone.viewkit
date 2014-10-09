@@ -327,6 +327,8 @@
         },
 
         after: function(from, to) {
+            to.css(Config.transition, 'opacity 0.2s ease-out 0.2s');
+            from.css(Config.transition, 'opacity 0.2s ease-out 0');
             to.show().css('opacity', 1);
             from.css('opacity', 0);
         },
@@ -334,7 +336,9 @@
         cleanup: function(from, to) {
             var views = from.add(to);
             views.css('opacity', '');
-            views.css('display', '');
+            //views.css('display', '');
+
+            views.css(Config.transition, '');
         }
 
     });
